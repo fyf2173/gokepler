@@ -1,12 +1,14 @@
-module gokepler
+module github.com/fyf2173/gokepler
 
 go 1.18
 
-require github.com/fyf2173/ysdk-go v0.0.0-20220920154841-2de49a5a415d
+require (
+	github.com/fyf2173/ysdk-go v0.0.0-20220920154841-2de49a5a415d
+	github.com/google/uuid v1.3.0
+)
 
 require (
 	github.com/forgoer/openssl v1.2.1 // indirect
-	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.5.0 // indirect
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect

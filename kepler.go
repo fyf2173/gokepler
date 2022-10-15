@@ -1,8 +1,8 @@
 package gokepler
 
 import (
-	"gokepler/auth"
-	"gokepler/jcq"
+	"github.com/fyf2173/gokepler/auth"
+	"github.com/fyf2173/gokepler/jcq"
 )
 
 type Config struct {
