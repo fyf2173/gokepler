@@ -28,6 +28,22 @@ const (
 	defaultNamespace = "Default"
 )
 
+const (
+	MqSkuChange        = "ct_sku_change"               // 商品信息变更
+	MqSkuPriceChange   = "ct_sku_price_change"         // 商品价格变更
+	MqAddrChange       = "jd_address_change"           // 四级地址变更
+	MqOrderCreate      = "ct_order_create"             // 订单创建成功
+	MqOrderPay         = "ct_order_pay"                // 订单支付成功
+	MqStockOut         = "ct_order_stockout"           // 订单出库
+	MqOrderDelivered   = "ct_order_delivered"          // 订单妥投
+	MqOrderFinish      = "ct_order_finish"             // 订单完成
+	MqOrderCancel      = "ct_order_cancel"             // 订单取消
+	MqOrderRefund      = "ct_order_refund"             // 订单退款成功
+	MqAfsCreate        = "ct_afs_create"               // 创建售后
+	MqAfsStep          = "ct_afs_step_result"          // 售后单全流程
+	MqBalanceNotEnough = "ct_order_balance_not_enough" // 余额不足提醒
+)
+
 // 此列表里的topic需设置默认的命名空间
 var mustNamespace = map[string]bool{
 	"jd_address_change": true,

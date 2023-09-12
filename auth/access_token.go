@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	sdkHttp "github.com/fyf2173/ysdk-go/http"
+	"github.com/fyf2173/ysdk-go/xhttp"
 )
 
 const (
@@ -32,7 +32,7 @@ func (ac *AccessClient) AccessToken(code string) (*JdAccessTokenResponse, error)
 	var response JdAccessTokenResponse
 	link := fmt.Sprintf(AccessToken, ac.AppKey, ac.AppSecret, code)
 
-	if err := sdkHttp.Request(http.MethodGet, link, nil, &response); err != nil {
+	if err := xhttp.Request(http.MethodGet, link, nil, &response); err != nil {
 		return nil, fmt.Errorf("query access token failed, err=%+v", err)
 	}
 	if response.Code != 0 {
@@ -46,7 +46,7 @@ func (ac *AccessClient) RefreshToken(refreshToken string) (*JdAccessTokenRespons
 	var response JdAccessTokenResponse
 	link := fmt.Sprintf(RefreshToken, ac.AppKey, ac.AppSecret, refreshToken)
 
-	if err := sdkHttp.Request(http.MethodGet, link, nil, &response); err != nil {
+	if err := xhttp.Request(http.MethodGet, link, nil, &response); err != nil {
 		return nil, fmt.Errorf("refresh access token failed, err=%+v", err)
 	}
 	if response.Code != 0 {

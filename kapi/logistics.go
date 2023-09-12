@@ -3,7 +3,7 @@ package kapi
 // QueryOrderLogistics 订单物流轨迹
 func (kc *Client) QueryOrderLogistics(jdOrderId int64) ([]*LogisticTrace, error) {
 	params := new(QueryOrderLogisticsReq)
-	params.Protocol = *kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = *kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.Pin = kc.Pin
 	params.OrderId = jdOrderId
 

@@ -20,7 +20,7 @@ const (
 	AfsGetApplyReason       = "jingdong.ctp.afs.operate.apply.getApplyReason"         // 售后原因
 	AfsApplyCreate          = "jingdong.ctp.afs.operate.apply.createAfsApply"         // 申请售后
 	AfsLogisticAddress      = "jingdong.ctp.afs.logistics.getLogisticsAddress"        // 寄回地址
-	AfsLogisticInfo         = "jingdong.ctp.afs.logistics.postBackLogisticsBillParam" // 售后物流
+	AfsLogisticPostback     = "jingdong.ctp.afs.logistics.postBackLogisticsBillParam" // 回传客户发货信息
 	AfsServiceDetail        = "jingdong.ctp.afs.servicenbill.getAfsServiceDetail"     // 售后详情
 	AfsServiceCancel        = "jingdong.ctp.afs.servicenbill.cancelAfsService"        // 取消售后
 	GetSkuListPath          = "jingdong.ctp.ware.sku.getSkuList"                      //获取渠道商品列表
@@ -34,22 +34,6 @@ const (
 	GetSkuDetailTag        = "jingdong_ctp_ware_sku_getSkuDetail_responce"
 	GetSkuPriceInfoListTag = "jingdong_ctp_ware_price_getSkuPriceInfoList_responce"
 	GetSkuBrotherListTag   = "jingdong_ctp_ware_sku_getBrotherList_responce"
-)
-
-const (
-	MqSkuChange        = "ct_sku_change"               // 商品信息变更
-	MqSkuPriceChange   = "ct_sku_price_change"         // 商品价格变更
-	MqAddrChange       = "jd_address_change"           // 四级地址变更
-	MqOrderCreate      = "ct_order_create"             // 订单创建成功
-	MqOrderPay         = "ct_order_pay"                // 订单支付成功
-	MqStockOut         = "ct_order_stockout"           // 订单出库
-	MqOrderDelivered   = "ct_order_delivered"          // 订单妥投
-	MqOrderFinish      = "ct_order_finish"             // 订单完成
-	MqOrderCancel      = "ct_order_cancel"             // 订单取消
-	MqOrderRefund      = "ct_order_refund"             // 订单退款成功
-	MqAfsCreate        = "ct_afs_create"               // 创建售后
-	MqAfsStep          = "ct_afs_step_result"          // 售后单全流程
-	MqBalanceNotEnough = "ct_order_balance_not_enough" // 余额不足提醒
 )
 
 const (
@@ -449,8 +433,13 @@ type QueryOrderLogisticsReq struct {
 }
 
 type QuerySkuListReq struct {
-	PageSize int64  `json:"pageSize"`
-	ScrollId string `json:"scrollId"`
+	PageSize      int64  `json:"pageSize"`
+	ScrollId      string `json:"scrollId,omitempty"`
+	OrderBy       string `json:"orderBy,omitempty" desc:"modified:asc"`
+	SkuStatus     int    `json:"skuStatus,omitempty" desc:"sku上下架状态(1 上架,2 下架)"`
+	CategoryId    int    `json:"categoryId,omitempty"`
+	StartModified string `json:"startModified,omitempty" desc:"2021-01-01 00:00:00"`
+	EndModified   string `json:"endModified,omitempty" desc:"2021-01-01 00:00:00"`
 }
 
 type QuerySkuListResp struct {
@@ -561,12 +550,12 @@ type QuerySkuPriceReq struct {
 }
 
 type QuerySkuPriceResp struct {
-	CustomerId   int64      `json:"customerId" desc:"客户id，客户唯一身份标识"`
-	ChannelId    int64      `json:"channelId" desc:"渠道id，客户对应的细分渠道标识"`
-	SkuPriceList []SkuPrice `json:"skuPriceList"`
+	CustomerId   int64          `json:"customerId" desc:"客户id，客户唯一身份标识"`
+	ChannelId    int64          `json:"channelId" desc:"渠道id，客户对应的细分渠道标识"`
+	SkuPriceList []SkuPriceItem `json:"skuPriceList"`
 }
 
-type SkuPrice struct {
+type SkuPriceItem struct {
 	IsSuccess       bool    `json:"isSuccess" desc:"是否获取价格成功"`
 	ChannelId       string  `json:"errorMessage" desc:"若sku价格查询失败（isSuccess!=true），则返回原因"`
 	SkuPrice        float64 `json:"skuPrice" desc:"sku价格，仅获取价格成功时(isSuccess=true)有值,单位:元 小数点后两位"`
@@ -599,8 +588,11 @@ type AfsSupportedTypeItem struct {
 }
 
 type QueryApplyReasonsReq struct {
-	CanApplyInfoReq
-	OrderId int64 `json:"orderId" desc:"售后服务单对应的京东订单号"`
+	Pin           string `json:"pin"`
+	SkuId         int64  `json:"skuId"`
+	AfsDetailType int    `json:"afsDetailType" desc:"商品类型：10-主品，20-赠品"`
+	OrderId       int64  `json:"orderId" desc:"售后服务单对应的京东订单号"`
+	AfsType       int    `json:"afsType" desc:"售后服务类型id退货(10)，换货(20)"`
 }
 
 type ApplyReasonItem struct {
@@ -701,4 +693,13 @@ type AfsServiceDetailSkuQuantity struct {
 	SkuType      int    `json:"skuType"`      //标识商品属性1单品、2买赠：赠品套装中的主商品、3买赠：赠品套装中的赠品
 	ValidNumFlag int    `json:"validNumFlag"` //赠品申请标识 1代表申请了，0代表没申请或释放了，后续可以继续申请
 	SkuId        int64  `json:"skuId"`
+}
+
+type AfsServiceCancelReq struct {
+	AfsServiceId int64  `json:"afsServiceId"`
+	Pin          string `json:"pin"`
+}
+
+type AfsServiceCancelResp struct {
+	CancelState int `json:"cancelState"` // 取消状态（1.不可取消；2.取消成功；3.取消失败）
 }

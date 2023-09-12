@@ -2,11 +2,10 @@ package kapi
 
 import "fmt"
 
-
 // SubmitOrder 创建订单
 func (kc *Client) SubmitOrder(req SubmitOrderReq) (*SubmitOrderResp, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	req.Pin = kc.Pin
 	paramsMap["param"] = req
 
@@ -20,7 +19,7 @@ func (kc *Client) SubmitOrder(req SubmitOrderReq) (*SubmitOrderResp, error) {
 // QuerySubmitOrder 反查订单
 func (kc *Client) QuerySubmitOrder(channelOrderId int64) (*SubmitOrderResp, error) {
 	var params = QuerySubmitOrderReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.ChannelOrderId = fmt.Sprintf("%d", channelOrderId)
 	params.Pin = kc.Pin
 
@@ -34,7 +33,7 @@ func (kc *Client) QuerySubmitOrder(channelOrderId int64) (*SubmitOrderResp, erro
 // QueryOrderDetail 查询订单详情
 func (kc *Client) QueryOrderDetail(orderId int64) (*QueryOrderDetailResp, error) {
 	var params = QueryOrderDetailReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.OrderId = orderId
 	params.Pin = kc.Pin
 
@@ -48,7 +47,7 @@ func (kc *Client) QueryOrderDetail(orderId int64) (*QueryOrderDetailResp, error)
 // ConfirmDelivery 订单确认收货
 func (kc *Client) ConfirmDelivery(orderId int64) error {
 	var params = ConfirmDeliveryReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.ClientPort = "80"
 	params.OrderId = orderId
 
@@ -61,7 +60,7 @@ func (kc *Client) ConfirmDelivery(orderId int64) error {
 // PushOrder 推送订单（慎用，需jd运营配置后才生效）
 func (kc *Client) PushOrder(orderId int64) error {
 	var params = PushOrderReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.OrderId = orderId
 
 	if err := kc.Request(PushOrder, params, nil); err != nil {
@@ -73,7 +72,7 @@ func (kc *Client) PushOrder(orderId int64) error {
 // QueryOrderPayInfo 查询订单支付信息
 func (kc *Client) QueryOrderPayInfo(orderId int64) (*OrderPayInfoResp, error) {
 	var params = QueryOrderDetailReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.Pin = kc.Pin
 	params.OrderId = orderId
 
@@ -87,7 +86,7 @@ func (kc *Client) QueryOrderPayInfo(orderId int64) (*OrderPayInfoResp, error) {
 // QueryInvoiceDetail 查询发票信息
 func (kc *Client) QueryInvoiceDetail(orderId int64) ([]*InvoiceDetail, error) {
 	var params = QueryOrderDetailReq{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.Pin = kc.Pin
 	params.OrderId = orderId
 
@@ -101,7 +100,7 @@ func (kc *Client) QueryInvoiceDetail(orderId int64) ([]*InvoiceDetail, error) {
 // CancelOrder 取消订单
 func (kc *Client) CancelOrder(req CancelOrderReq) (int, error) {
 	var params = CancelOrderParams{}
-	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	params.Protocol = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	params.Pin = kc.Pin
 	params.CancelOrderReq = req
 

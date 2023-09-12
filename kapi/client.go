@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	sdkHttp "github.com/fyf2173/ysdk-go/http"
+	sdkHttp "github.com/fyf2173/ysdk-go/xhttp"
 
 	"github.com/fyf2173/ysdk-go/crypto"
 )
@@ -18,16 +18,26 @@ import (
 type Client struct {
 	Pin        string
 	ChannelId  int64
-	CustomerID int64
-	AppID      string
+	CustomerId int64
 	AppKey     string
 	AppSecret  string
 	Token      string
 }
 
+func NewClient(channelId, custormerId int64, appKey, appSecret, pin, token string) *Client {
+	return &Client{
+		Pin:        pin,
+		ChannelId:  channelId,
+		CustomerId: custormerId,
+		AppKey:     appKey,
+		AppSecret:  appSecret,
+		Token:      token,
+	}
+}
+
 func (kc *Client) GetProtocolParams() *Protocol {
 	return &Protocol{
-		CustomerId: kc.CustomerID,
+		CustomerId: kc.CustomerId,
 		ChannelId:  kc.ChannelId,
 		AppKey:     kc.AppKey,
 		ClientIp:   "127.0.0.1",

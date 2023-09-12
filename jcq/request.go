@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdkHttp "github.com/fyf2173/ysdk-go/http"
+	"github.com/fyf2173/ysdk-go/xhttp"
 )
 
 // Request 消费/确认
@@ -12,13 +12,13 @@ func (jc *Client) Request(method string, path string, params interface{}, out in
 	jh := jc.NewHeader()
 	jh.Signature = jc.GetSignature(jh.GetSignSource(params))
 
-	opts := []sdkHttp.Option{
-		sdkHttp.SetRequestHeader("accessKey", jh.AccessKey),
-		sdkHttp.SetRequestHeader("dateTime", jh.DateTime),
-		sdkHttp.SetRequestHeader("signature", jh.Signature),
+	opts := []xhttp.Option{
+		xhttp.SetRequestHeader("accessKey", jh.AccessKey),
+		xhttp.SetRequestHeader("dateTime", jh.DateTime),
+		xhttp.SetRequestHeader("signature", jh.Signature),
 	}
 	var resp CommonConsumerResp
-	if err := sdkHttp.Request(method, fmt.Sprintf("%s%s", endPoint, path), params, &resp, opts...); err != nil {
+	if err := xhttp.Request(method, fmt.Sprintf("%s%s", endPoint, path), params, &resp, opts...); err != nil {
 		return err
 	}
 	if resp.Error != nil && resp.Error.Code != 0 {

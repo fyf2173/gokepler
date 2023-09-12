@@ -3,7 +3,7 @@ package kapi
 // QueryAreaStockState 查询区域库存状态
 func (kc *Client) QueryAreaStockState(req StockStateReq) ([]*StockStateRespItem, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID).WithOpName(kc.Pin)
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId).WithOpName(kc.Pin)
 	paramsMap["stockStateParam"] = req
 
 	var response []*StockStateRespItem
@@ -16,7 +16,7 @@ func (kc *Client) QueryAreaStockState(req StockStateReq) ([]*StockStateRespItem,
 // QueryFreightFee 获取运费
 func (kc *Client) QueryFreightFee(req FreightFeeReq) (float64, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	req.Pin = kc.Pin
 	req.PaymentType = PaymentOnline
 	paramsMap["apiFreightFeeParam"] = req
@@ -31,7 +31,7 @@ func (kc *Client) QueryFreightFee(req FreightFeeReq) (float64, error) {
 // QueryShipmentType 配送方式
 func (kc *Client) QueryShipmentType(req ShipmentTypeReq) (*ShipmentTypeResp, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["protocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	req.Pin = kc.Pin
 	req.PaymentType = PaymentOnline
 	paramsMap["apiShipmentTypeParam"] = req

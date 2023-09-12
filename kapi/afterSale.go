@@ -54,7 +54,7 @@ func (kc *Client) GetAfsLogisticAddress(afsServiceId int64) (*GetAfsLogisticAddr
 	}
 
 	var response *GetAfsLogisticAddressResp
-	if err := kc.Request(AfsApplyCreate, paramsMap, &response); err != nil {
+	if err := kc.Request(AfsLogisticAddress, paramsMap, &response); err != nil {
 		return nil, err
 	}
 	return response, nil
@@ -68,7 +68,7 @@ func (kc *Client) PostBackLogisitcBill(req PostBackLogisitcBillReq) (bool, error
 	paramsMap["logisticsBillParam"] = req
 
 	var response *PostBackLogisitcBillResp
-	if err := kc.Request(AfsApplyCreate, paramsMap, &response); err != nil {
+	if err := kc.Request(AfsLogisticPostback, paramsMap, &response); err != nil {
 		return false, err
 	}
 	if response.PostBackResult == false {
@@ -87,7 +87,23 @@ func (kc *Client) QueryAfsServiceDetail(afsServiceId int64) (*AfsServiceDetailRe
 	}
 
 	var response AfsServiceDetailResp
-	if err := kc.Request(AfsApplyCreate, paramsMap, &response); err != nil {
+	if err := kc.Request(AfsServiceDetail, paramsMap, &response); err != nil {
+		return nil, err
+	}
+	return &response, nil
+}
+
+// CancelAfsService 取消售后服务单
+func (kc *Client) CancelAfsService(afsServiceId int64) (*AfsServiceCancelResp, error) {
+	paramsMap := make(map[string]interface{})
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams()
+	paramsMap["cancelAfsServiceParam"] = map[string]interface{}{
+		"afsServiceId": afsServiceId,
+		"pin":          kc.Pin,
+	}
+
+	var response AfsServiceCancelResp
+	if err := kc.Request(AfsServiceDetail, paramsMap, &response); err != nil {
 		return nil, err
 	}
 	return &response, nil

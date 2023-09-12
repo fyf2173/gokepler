@@ -3,7 +3,7 @@ package kapi
 // GetSkuList 获取sku列表
 func (kc *Client) GetSkuList(req QuerySkuListReq) (*QuerySkuListResp, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	paramsMap["apiSkuListParam"] = req
 
 	var response QuerySkuListResp
@@ -16,7 +16,7 @@ func (kc *Client) GetSkuList(req QuerySkuListReq) (*QuerySkuListResp, error) {
 // GetBrotherSkus 获取兄弟sku列表
 func (kc *Client) GetBrotherSkus(req QueryBrotherSkuListReq) ([]*QueryBrotherSkuListItem, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID).WithTraceId()
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId).WithTraceId()
 	paramsMap["apiBrotherListParam"] = req
 
 	var response []*QueryBrotherSkuListItem
@@ -29,7 +29,7 @@ func (kc *Client) GetBrotherSkus(req QueryBrotherSkuListReq) ([]*QueryBrotherSku
 // GetSkuDetail 获取sku详情
 func (kc *Client) GetSkuDetail(req QuerySkuDetailReq) ([]*QuerySkuDetailResp, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	paramsMap["skuDetailParam"] = req
 
 	var response []*QuerySkuDetailResp
@@ -42,7 +42,7 @@ func (kc *Client) GetSkuDetail(req QuerySkuDetailReq) ([]*QuerySkuDetailResp, er
 // GetSkuPrice 批量获取sku价格
 func (kc *Client) GetSkuPrice(req QuerySkuPriceReq) (*QuerySkuPriceResp, error) {
 	paramsMap := make(map[string]interface{})
-	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerID)
+	paramsMap["ctpProtocol"] = kc.GetProtocolParams().WithCustomer(kc.CustomerId)
 	paramsMap["skuPriceInfoParam"] = req
 
 	var response QuerySkuPriceResp
